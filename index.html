@@ -1,43 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>GIF Search</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <form action="text" placeholder="search">
-                <button type="submit">Search!</button>
-            </form>
-        </header>
+      <header>
+        <form id="search-form">
+          <input id="search-input" type="text" placeholder="search" />
+          <button type="submit">Search!</button>
+        </form>
+      </header>
 
-        <div id="results" class="results">
-            <!-- GIF images stored here -->
-        </div>
+      <div id="results" class="results">
+        <!-- GIF images stored here -->
+      </div>
     </div>
-
 
     <!-- JAAVASCRIPT -->
     <script>
-        // learn to hide api key 
-        const apikey = 'OSjVJdxJXp78PdKJtSC8EGIZHRTnoVQv';
-        const q = 'cats';
+      const searchForm = document.getElementById("search-form");
+      const searchInput = document.getElementById("search-input");
+      const resultsEl = document.getElementById("results");
+
+      searchForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const q = searchInput.value
+
+        search(q)
+      });
+
+      function search(q) {
+        const apikey = "OSjVJdxJXp78PdKJtSC8EGIZHRTnoVQv";
         const path = `https://api.giphy.com/v1/gifs/search?api_key=${apikey}&q=${q}`;
 
-        const promiseTwo = fetch(path).then(function(response) {
-            return response.json()
-        }).then(function(json) {
-            console.log(json.data[0].images.fixed_width.url)
+        const promiseTwo = fetch(path)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(json) {
+            console.log(json.data[0].images.fixed_width.url);
+            
+            let resultsHTML = "";
             json.data.forEach(function(obj) {
-                console.log(obj.images.fixed_width.url)
+              console.log(obj);
 
-            })
-        }).catch(function(err) {
-            console.log(err.message )
-        })
+              const url = obj.images.fixed_width.url;
+              const width = obj.images.fixed_width.width;
+              const height = obj.images.fixed_width.height;
+              const title = obj.title;
+
+              resultsHTML += ` <img 
+                    src="${url}" 
+                    width="${width}"
+                    height="${height}"
+                    alt = "${title}"
+                >`;
+            });
+
+            resultsEl.innerHTML = resultsHTML;
+          })
+          .catch(function(err) {
+            console.log(err.message);
+          });
+      }
+      // learn to hide api key
     </script>
-</body>
+  </body>
 </html>
