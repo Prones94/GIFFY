@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GIF Search</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <form action="text" placeholder="search">
+                <button type="submit">Search!</button>
+            </form>
+        </header>
+
+        <div id="results" class="results">
+            <!-- GIF images stored here -->
+        </div>
+    </div>
+
+
+    <!-- JAAVASCRIPT -->
+    <script>
+        // learn to hide api key 
+        const apikey = 'OSjVJdxJXp78PdKJtSC8EGIZHRTnoVQv';
+        const q = 'cats';
+        const path = `https://api.giphy.com/v1/gifs/search?api_key=${apikey}&q=${q}`;
+
+        const promiseTwo = fetch(path).then(function(response) {
+            return response.json()
+        }).then(function(json) {
+            console.log(json.data[0].images.fixed_width.url)
+            json.data.forEach(function(obj) {
+                console.log(obj.images.fixed_width.url)
+
+            })
+        }).catch(function(err) {
+            console.log(err.message )
+        })
+    </script>
+</body>
+</html>
